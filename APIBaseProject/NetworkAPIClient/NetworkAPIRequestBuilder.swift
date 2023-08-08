@@ -21,7 +21,7 @@ struct NetworkAPIRequestBuilder: NetworkAPIRequestBuilderProtocol {
         let urlRequest = URLRequest(url: url)
 
         //TO-DO: apply result builder here
-        let operations: [(URLRequest, RestRequestProtocol?) -> URLRequest] = [
+        let operations: [(URLRequest, RestRequestProtocol) -> URLRequest] = [
             configContentTypeHeader,
             configRequestMethod
         ]
@@ -34,15 +34,15 @@ struct NetworkAPIRequestBuilder: NetworkAPIRequestBuilderProtocol {
         
     }
     
-    static private func configContentTypeHeader(for urlRequest: URLRequest, with request: RestRequestProtocol? = nil) -> URLRequest {
+    static private func configContentTypeHeader(for urlRequest: URLRequest, with request: RestRequestProtocol) -> URLRequest {
         var urlRequest = urlRequest
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         return urlRequest
     }
     
-    static private func configRequestMethod(for urlRequest: URLRequest , with request: RestRequestProtocol? = nil) -> URLRequest {
+    static private func configRequestMethod(for urlRequest: URLRequest , with request: RestRequestProtocol) -> URLRequest {
         var urlRequest = urlRequest
-        urlRequest.httpMethod = request?.method.rawValue
+        urlRequest.httpMethod = request.method.rawValue
         return urlRequest
     }
     
