@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 struct GitHubUser: Codable {
     let id: Int
     var login: String

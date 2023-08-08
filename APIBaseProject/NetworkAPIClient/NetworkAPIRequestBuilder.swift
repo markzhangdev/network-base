@@ -11,8 +11,8 @@ protocol NetworkAPIRequestBuilderProtocol {
     func build(with request: RestRequestProtocol) async throws -> URLRequest
 }
 
-
 struct NetworkAPIRequestBuilder: NetworkAPIRequestBuilderProtocol {
+    typealias URLRequestDecorator = (URLRequest, RestRequestProtocol) -> URLRequest
     
     func build(with request: RestRequestProtocol) async throws -> URLRequest {
         guard let url = request.url else {
@@ -20,18 +20,13 @@ struct NetworkAPIRequestBuilder: NetworkAPIRequestBuilderProtocol {
         }
         let urlRequest = URLRequest(url: url)
 
-        //TO-DO: apply result builder here
-        let operations: [(URLRequest, RestRequestProtocol) -> URLRequest] = [
-            configContentTypeHeader,
-            configRequestMethod
-        ]
+        let operations = buildDecoratorArray()
         
         let result = operations.reduce(urlRequest) { result, operation in
-            return operation(result, request)
+            operation(result, request)
         }
         
         return result
-        
     }
     
     private func configContentTypeHeader(for urlRequest: URLRequest, with request: RestRequestProtocol) -> URLRequest {
@@ -40,11 +35,26 @@ struct NetworkAPIRequestBuilder: NetworkAPIRequestBuilderProtocol {
         return urlRequest
     }
     
-    private func configRequestMethod(for urlRequest: URLRequest , with request: RestRequestProtocol) -> URLRequest {
+    private func configRequestMethod(for urlRequest: URLRequest, with request: RestRequestProtocol) -> URLRequest {
         var urlRequest = urlRequest
         urlRequest.httpMethod = request.method.rawValue
         return urlRequest
     }
     
+    @URLRequestDecoratorBuilder
+    private func buildDecoratorArray() -> [URLRequestDecorator] {
+        configContentTypeHeader
+        configRequestMethod
+    }
     
+    @resultBuilder
+    enum URLRequestDecoratorBuilder {
+        static func buildBlock(_ components: URLRequestDecorator...) -> [URLRequestDecorator] {
+            var result: [URLRequestDecorator] = []
+            for component in components {
+                result.append(component)
+            }
+            return result
+        }
+    }
 }

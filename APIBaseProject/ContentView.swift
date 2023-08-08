@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    
     @State private var user: GitHubUser?
-    
+
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -19,7 +18,6 @@ struct ContentView: View {
             Text(user?.login ?? "Hello")
                 .task {
                     user = try? await ExampleAPIService.getGitHubUserInfo(by: "markzhangdev")
-                    
                 }
         }
         .padding()

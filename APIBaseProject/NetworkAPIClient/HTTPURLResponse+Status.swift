@@ -7,9 +7,9 @@
 
 import Foundation
 
-extension HTTPURLResponse {
-    public var wasSuccessful: Bool {
-        let successRange = 200..<300
+public extension HTTPURLResponse {
+    var wasSuccessful: Bool {
+        let successRange = 200 ..< 300
         return successRange.contains(statusCode)
     }
 }

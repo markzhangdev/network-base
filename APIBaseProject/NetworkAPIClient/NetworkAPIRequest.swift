@@ -8,7 +8,6 @@
 import Foundation
 
 public enum HTTPMethod: String {
-    
     case get = "GET"
     case put = "PUT"
     case post = "POST"
@@ -26,5 +25,3 @@ protocol RestRequestProtocol {
     var query: [String: String]? { get set }
     var body: Encodable? { get set }
 }
-
-
