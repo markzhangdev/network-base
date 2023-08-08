@@ -2,7 +2,7 @@
 //  GitHubUser.swift
 //  APIBaseProject
 //
-//  Created by Zhang, Ming on 8/8/2023.
+//  Created by Zhang, Mark on 8/8/2023.
 //
 
 import Foundation
