@@ -45,9 +45,4 @@ public actor NetworkAPIClient: NetworkAPIClientProtocol {
         
         return result
     }
-    
-    
-
-    
-    
 }
