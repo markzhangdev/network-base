@@ -23,5 +23,5 @@ protocol RestRequestProtocol {
     var method: HTTPMethod { get }
     var url: URL? { get }
     var query: [String: String]? { get set }
-    var body: Encodable? { get set }
+    var body: JSONSerializable? { get set }
 }

@@ -41,10 +41,32 @@ struct NetworkAPIRequestBuilder: NetworkAPIRequestBuilderProtocol {
         return urlRequest
     }
     
+    private func configQueryParameters(for urlRequest: URLRequest, with request: RestRequestProtocol) -> URLRequest {
+        guard let queryParms = request.query else { return urlRequest }
+        var urlRequest = urlRequest
+        guard let url = urlRequest.url else { fatalError("url is missing in request") }
+        var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true)
+        let queryItems = queryParms.map {
+            URLQueryItem(name: $0.key, value: $0.value)
+        }
+        urlComponents?.queryItems = queryItems
+        urlRequest.url = urlComponents?.url
+        return urlRequest
+    }
+    
+    private func configJSONBodyParameters(for urlRequest: URLRequest, with request: RestRequestProtocol) -> URLRequest {
+        guard let body = request.body else { return urlRequest }
+        var urlRequest = urlRequest
+        urlRequest.httpBody = body.serializeToJSON()
+        return urlRequest
+    }
+ 
     @URLRequestDecoratorBuilder
     private func buildDecoratorArray() -> [URLRequestDecorator] {
         configContentTypeHeader
         configRequestMethod
+        configQueryParameters
+        configJSONBodyParameters
     }
     
     @resultBuilder

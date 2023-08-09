@@ -16,12 +16,12 @@ struct ExampleRequest: RestRequestProtocol {
     
     var query: [String: String]?
     
-    var body: Encodable?
+    var body: JSONSerializable?
     
     init(path: String,
          method: HTTPMethod = .get,
          query: [String: String]? = nil,
-         body: Encodable? = nil)
+         body: JSONSerializable? = nil)
     {
         self.path = path
         self.method = method
